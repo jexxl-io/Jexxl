@@ -8,7 +8,7 @@
 /n8n Account Recovery/
 
 # Ignore all '__pycache__' directories (and their contents)
-**/__pycache__/
+__pycache__/
 
 # Ignore all '.venv' directories (and their contents)
-**/.venv/
+.venv/
