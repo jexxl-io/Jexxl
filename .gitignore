@@ -1,0 +1,14 @@
+# Ignore .env files
+*.env
+
+# Ignore log files
+*.log
+
+# Ignore 'n8n Account Recovery' directory (and its contents)
+/n8n Account Recovery/
+
+# Ignore all '__pycache__' directories (and their contents)
+**/__pycache__/
+
+# Ignore all '.venv' directories (and their contents)
+**/.venv/
