@@ -1,0 +1,104 @@
+# docker-compose.yml
+
+networks:
+  caddy_network:
+    driver: bridge
+
+services:
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:latest
+    container_name: n8n
+    networks:
+      - caddy_network
+    ports:
+      - "5678:5678"
+    environment:
+      - WEBHOOK_URL=${N8N_WEBHOOK_URL}
+      - N8N_EMAIL_MODE=smtp
+      - N8N_SMTP_HOST=smtp.gmail.com
+      - N8N_SMTP_PORT=465
+      - N8N_SMTP_USER=${N8N_SMTP_USER}
+      - N8N_SMTP_PASS=${N8N_SMTP_PASS}
+      - N8N_SMTP_SENDER=${N8N_SMTP_SENDER}
+    volumes:
+      - n8n_data:/home/node/.n8n
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    networks:
+      - caddy_network
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    networks:
+      - caddy_network
+    ports:
+      - "65162:80"
+    depends_on:
+      - postgres
+    links:
+      - postgres:postgres
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
+  budibase:
+    image: budibase/budibase:latest
+    container_name: budibase
+    networks:
+      - caddy_network
+    ports:
+      - "65163:80"
+    volumes:
+      - budibase_data:/data
+      - couchdb_data:/opt/couchdb/data
+
+  keycloak:
+    image: bitnami/keycloak:latest
+    container_name: keycloak
+    networks:
+      - caddy_network
+    ports:
+      - "65164:8080"
+    environment:
+      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN}
+      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
+      - DB_VENDOR=POSTGRES
+      - DB_ADDR=postgres
+      - DB_DATABASE=keycloak
+      - DB_USER=keycloak_user
+      - DB_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - keycloak_data:/bitnami/keycloak
+
+  caddy:
+    image: caddy:latest
+    container_name: caddy
+    networks:
+      - caddy_network
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ${CADDY_VOLUME_LOCATION}:/etc/caddy/Caddyfile
+
+volumes:
+  n8n_data:
+    external: true
+  postgres_data:
+    external: true
+  pgadmin_data:
+    external: true
+  budibase_data:
+    external: true
+  couchdb_data:
+    external: true
+  keycloak_data:
+    external: true

@@ -1,0 +1,9 @@
+langchain-community
+langchain-openai
+openai
+flask
+waitress
+python-dotenv
+requests
+python-Levenshtein
+fuzzywuzzy

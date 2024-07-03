@@ -1,0 +1,187 @@
+2024-05-30 10:54:39 AM CST - INFO - Serving on http://0.0.0.0:65159
+2024-05-30 10:54:44 AM CST - INFO - Request to '/suiteql' was made
+2024-05-30 10:54:45 AM CST - INFO - HTTP Request: POST https://api.openai.com/v1/completions "HTTP/1.1 401 Unauthorized"
+2024-05-30 10:54:45 AM CST - ERROR - Failed to execute query: Error code: 401 - {'error': {'message': 'Incorrect API key provided: HmeW8UKe************************************HMGX. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}
+2024-05-30 10:54:45 AM CST - ERROR - Exception on /suiteql [POST]
+Traceback (most recent call last):
+  File "C:\Users\Caleb\Documents\JexxlAPI\.venv\Lib\site-packages\flask\app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Caleb\Documents\JexxlAPI\.venv\Lib\site-packages\flask\app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Caleb\Documents\JexxlAPI\.venv\Lib\site-packages\flask\app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Caleb\Documents\JexxlAPI\.venv\Lib\site-packages\flask\app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Caleb\Documents\JexxlAPI\app.py", line 25, in suiteql
+    answer = SuiteQLTool.buildQuery(auth, question)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Caleb\Documents\JexxlAPI\SuiteQLTool.py", line 59, in buildQuery
+    response = sequence.invoke(inputs)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Caleb\Documents\JexxlAPI\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 2368, in invoke
+    input = step.invoke(
+            ^^^^^^^^^^^^
+  File "C:\Users\Caleb\Documents\JexxlAPI\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 3832, in invoke
+    return self._call_with_config(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Caleb\Documents\JexxlAPI\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 1492, in _call_with_config
+    context.run(
+  File "C:\Users\Caleb\Documents\JexxlAPI\.venv\Lib\site-packages\langchain_core\runnables\config.py", line 347, in call_func_with_variable_args
+    return func(input, **kwargs)  # type: ignore[call-arg]
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Caleb\Documents\JexxlAPI\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 3706, in _invoke
+    output = call_func_with_variable_args(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Caleb\Documents\JexxlAPI\.venv\Lib\site-packages\langchain_core\runnables\config.py", line 347, in call_func_with_variable_args
+    return func(input, **kwargs)  # type: ignore[call-arg]
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Caleb\Documents\JexxlAPI\SuiteQLTool.py", line 50, in <lambda>
+    runnable_llm = RunnableLambda(lambda prompt: llm.invoke(prompt))
+                                                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Caleb\Documents\JexxlAPI\.venv\Lib\site-packages\langchain_core\language_models\llms.py", line 276, in invoke
+    self.generate_prompt(
+  File "C:\Users\Caleb\Documents\JexxlAPI\.venv\Lib\site-packages\langchain_core\language_models\llms.py", line 633, in generate_prompt
+    return self.generate(prompt_strings, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Caleb\Documents\JexxlAPI\.venv\Lib\site-packages\langchain_core\language_models\llms.py", line 803, in generate
+    output = self._generate_helper(
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Caleb\Documents\JexxlAPI\.venv\Lib\site-packages\langchain_core\language_models\llms.py", line 670, in _generate_helper
+    raise e
+  File "C:\Users\Caleb\Documents\JexxlAPI\.venv\Lib\site-packages\langchain_core\language_models\llms.py", line 657, in _generate_helper
+    self._generate(
+  File "C:\Users\Caleb\Documents\JexxlAPI\.venv\Lib\site-packages\langchain_openai\llms\base.py", line 350, in _generate
+    response = self.client.create(prompt=_prompts, **params)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Caleb\Documents\JexxlAPI\.venv\Lib\site-packages\openai\_utils\_utils.py", line 277, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Caleb\Documents\JexxlAPI\.venv\Lib\site-packages\openai\resources\completions.py", line 528, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "C:\Users\Caleb\Documents\JexxlAPI\.venv\Lib\site-packages\openai\_base_client.py", line 1240, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Caleb\Documents\JexxlAPI\.venv\Lib\site-packages\openai\_base_client.py", line 921, in request
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "C:\Users\Caleb\Documents\JexxlAPI\.venv\Lib\site-packages\openai\_base_client.py", line 1020, in _request
+    raise self._make_status_error_from_response(err.response) from None
+openai.AuthenticationError: Error code: 401 - {'error': {'message': 'Incorrect API key provided: HmeW8UKe************************************HMGX. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}
+2024-05-30 10:59:37 AM CST - INFO - Request to '/suiteql' was made
+2024-05-30 10:59:41 AM CST - INFO - HTTP Request: POST https://api.openai.com/v1/completions "HTTP/1.1 200 OK"
+2024-05-30 10:59:42 AM CST - INFO - Query executed successfully
+2024-05-30 11:04:16 AM CST - INFO - Serving on http://0.0.0.0:65159
+2024-05-30 11:04:20 AM CST - INFO - Request to '/suiteql' was made
+2024-05-30 11:04:23 AM CST - INFO - HTTP Request: POST https://api.openai.com/v1/completions "HTTP/1.1 200 OK"
+2024-05-30 11:04:23 AM CST - INFO - Query executed successfully
+2024-05-30 11:05:15 AM CST - INFO - Request to '/suiteql' was made
+2024-05-30 11:05:20 AM CST - INFO - HTTP Request: POST https://api.openai.com/v1/completions "HTTP/1.1 200 OK"
+2024-05-30 11:05:20 AM CST - INFO - Query executed successfully
+2024-05-30 03:32:26 PM CST - INFO - Serving on http://0.0.0.0:65159
+2024-05-30 03:32:49 PM CST - INFO - Request to '/suiteql' was made
+2024-05-30 03:32:52 PM CST - INFO - HTTP Request: POST https://api.openai.com/v1/completions "HTTP/1.1 200 OK"
+2024-05-30 03:32:52 PM CST - INFO - Query executed successfully
+2024-06-28 08:45:17 PM CST - INFO - Serving on http://0.0.0.0:65159
+2024-06-28 09:20:33 PM CST - INFO - Request to '/' was made
+2024-06-28 09:20:35 PM CST - INFO - Request to '/' was made
+2024-06-28 09:20:38 PM CST - INFO - Request to '/' was made
+2024-06-28 09:20:39 PM CST - INFO - Request to '/' was made
+2024-06-28 09:20:48 PM CST - INFO - Request to '/' was made
+2024-06-28 09:20:53 PM CST - INFO - Request to '/' was made
+2024-06-28 09:21:12 PM CST - INFO - Request to '/' was made
+2024-06-28 09:21:30 PM CST - INFO - Request to '/' was made
+2024-06-29 10:54:57 AM CST - INFO - Request to '/' was made
+2024-06-29 10:54:58 AM CST - INFO - Request to '/' was made
+2024-06-29 10:59:17 AM CST - INFO - Request to '/' was made
+2024-06-29 01:22:35 PM CST - INFO - Request to '/' was made
+2024-06-29 03:36:57 PM CST - INFO - Request to '/' was made
+2024-06-29 04:25:18 PM CST - INFO - Request to '/' was made
+2024-06-29 09:58:44 PM CST - INFO - Request to '/' was made
+2024-06-29 09:58:44 PM CST - INFO - Request to '/' was made
+2024-06-29 09:58:47 PM CST - INFO - Request to '/' was made
+2024-06-29 10:22:41 PM CST - INFO - Request to '/' was made
+2024-06-29 10:54:01 PM CST - INFO - Request to '/' was made
+2024-06-29 10:54:02 PM CST - INFO - Request to '/' was made
+2024-06-29 10:54:11 PM CST - INFO - Request to '/' was made
+2024-06-29 10:54:11 PM CST - INFO - Request to '/' was made
+2024-06-29 10:54:14 PM CST - INFO - Request to '/' was made
+2024-06-30 07:52:09 PM CST - INFO - Request to '/' was made
+2024-06-30 07:53:37 PM CST - INFO - Request to '/' was made
+2024-06-30 09:21:54 PM CST - INFO - Request to '/' was made
+2024-07-01 12:53:05 AM CST - INFO - Request to '/' was made
+2024-07-01 05:25:32 AM CST - INFO - Request to '/' was made
+2024-07-01 05:36:24 AM CST - INFO - Request to '/' was made
+2024-07-01 07:06:53 AM CST - INFO - Request to '/' was made
+2024-07-01 09:41:55 AM CST - INFO - Request to '/' was made
+2024-07-01 09:48:45 AM CST - INFO - Serving on http://0.0.0.0:65159
+2024-07-01 09:48:50 AM CST - INFO - Request to '/' was made
+2024-07-01 09:49:55 AM CST - INFO - Request to '/' was made
+2024-07-01 09:51:18 AM CST - INFO - Serving on http://0.0.0.0:65159
+2024-07-01 09:52:21 AM CST - INFO - Serving on http://0.0.0.0:65159
+2024-07-01 09:52:31 AM CST - INFO - Request to '/' was made
+2024-07-01 09:52:35 AM CST - INFO - Request to '/' was made
+2024-07-01 09:52:44 AM CST - INFO - Request to '/' was made
+2024-07-01 09:52:45 AM CST - INFO - Request to '/' was made
+2024-07-01 09:52:46 AM CST - INFO - Request to '/' was made
+2024-07-01 09:52:46 AM CST - INFO - Request to '/' was made
+2024-07-01 09:53:17 AM CST - INFO - Serving on http://0.0.0.0:65159
+2024-07-01 09:53:19 AM CST - INFO - Request to '/' was made
+2024-07-01 09:53:34 AM CST - INFO - Request to '/' was made
+2024-07-01 09:55:23 AM CST - INFO - Serving on http://0.0.0.0:65159
+2024-07-01 09:57:36 AM CST - INFO - Request to '/' was made
+2024-07-01 09:57:36 AM CST - INFO - Client IP: 127.0.0.1
+2024-07-01 10:17:19 AM CST - INFO - Serving on http://0.0.0.0:65159
+2024-07-01 10:17:29 AM CST - INFO - Request to '/' was made
+2024-07-01 11:53:32 AM CST - INFO - Serving on http://0.0.0.0:65159
+2024-07-01 03:29:35 PM CST - INFO - Serving on http://0.0.0.0:65159
+2024-07-01 04:12:55 PM CST - INFO - Request to '/' was made
+2024-07-01 06:16:50 PM CST - INFO - Serving on http://0.0.0.0:65159
+2024-07-01 06:22:21 PM CST - INFO - Request to '/' was made
+2024-07-01 06:22:30 PM CST - INFO - Request to '/' was made
+2024-07-01 07:08:38 PM CST - INFO - Request to '/' was made
+2024-07-02 01:29:09 AM CST - INFO - Request to '/' was made
+2024-07-02 09:39:40 AM CST - INFO - Serving on http://0.0.0.0:65159
+2024-07-02 09:40:36 AM CST - INFO - Serving on http://0.0.0.0:65159
+2024-07-02 09:40:59 AM CST - INFO - Request to '/' was made
+2024-07-02 09:41:40 AM CST - INFO - Serving on http://0.0.0.0:65159
+2024-07-02 09:44:21 AM CST - INFO - Serving on http://0.0.0.0:65159
+2024-07-02 09:46:21 AM CST - INFO - Serving on http://0.0.0.0:65159
+2024-07-02 09:49:16 AM CST - INFO - Serving on http://0.0.0.0:65159
+2024-07-02 09:49:29 AM CST - INFO - Request to '/' was made
+2024-07-02 09:50:12 AM CST - INFO - Request to '/' was made
+2024-07-02 09:50:49 AM CST - INFO - Request to '/' was made
+2024-07-02 09:50:50 AM CST - INFO - Request to '/' was made
+2024-07-02 09:50:59 AM CST - INFO - Request to '/' was made
+2024-07-02 09:52:08 AM CST - INFO - Serving on http://0.0.0.0:65159
+2024-07-02 09:52:57 AM CST - INFO - Serving on http://0.0.0.0:65159
+2024-07-02 12:53:12 PM CST - INFO - Serving on http://0.0.0.0:65159
+2024-07-02 01:59:01 PM CST - INFO - Serving on http://0.0.0.0:65159
+2024-07-02 02:54:06 PM CST - INFO - Request to '/' was made
+2024-07-02 02:54:08 PM CST - INFO - Request to '/' was made
+2024-07-02 02:54:21 PM CST - INFO - Request to '/' was made
+2024-07-02 02:54:24 PM CST - INFO - Request to '/' was made
+2024-07-02 02:54:32 PM CST - INFO - Request to '/' was made
+2024-07-02 02:54:47 PM CST - INFO - Request to '/' was made
+2024-07-02 02:54:52 PM CST - INFO - Request to '/' was made
+2024-07-02 02:54:56 PM CST - INFO - Request to '/' was made
+2024-07-02 03:02:26 PM CST - INFO - Request to '/' was made
+2024-07-02 03:12:36 PM CST - INFO - Request to '/' was made
+2024-07-02 04:41:05 PM CST - INFO - Request to '/' was made
+2024-07-02 04:41:21 PM CST - INFO - Request to '/' was made
+2024-07-02 06:23:00 PM CST - WARNING - Task queue depth is 1
+2024-07-02 06:23:00 PM CST - WARNING - Task queue depth is 1
+2024-07-02 06:23:00 PM CST - INFO - Request to '/' was made
+2024-07-02 07:28:03 PM CST - INFO - Request to '/' was made
+2024-07-03 02:54:05 AM CST - INFO - Request to '/' was made
+2024-07-03 02:54:06 AM CST - INFO - Request to '/' was made
+2024-07-03 02:54:11 AM CST - INFO - Request to '/' was made
+2024-07-03 02:58:01 AM CST - INFO - Request to '/' was made
+2024-07-03 05:53:17 AM CST - INFO - Request to '/' was made
+2024-07-03 07:14:45 AM CST - INFO - Request to '/' was made
+2024-07-03 08:01:57 AM CST - INFO - Serving on http://0.0.0.0:65159
+2024-07-03 08:04:44 AM CST - INFO - Serving on http://0.0.0.0:65159
