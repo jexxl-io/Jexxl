@@ -1,0 +1,8 @@
+{
+    "venv_activate": "C:/Jexxl/.venv/Scripts/activate",
+    "wsgis": [
+        "C:/Jexxl/FlaskRunner/Jexxl/wsgi.py",
+        "C:/Jexxl/FlaskRunner/JexxlAPI/wsgi.py",
+        "C:/Jexxl/FlaskRunner/JexxlPages/wsgi.py"
+    ]
+}

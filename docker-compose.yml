@@ -1,10 +1,43 @@
-# docker-compose.yml
-
-networks:
-  caddy_network:
-    driver: bridge
-
 services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    networks:
+      - caddy_network
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB_NAME}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -d $$POSTGRES_DB -U $$POSTGRES_USER"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  initdb_py:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - PYTHON_VERSION=3.9
+    image: jexxl-python39
+    container_name: initdb_py
+    networks:
+      - caddy_network
+    volumes:
+      - ./initdb.py:/initdb.py
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   n8n:
     image: docker.n8n.io/n8nio/n8n:latest
     container_name: n8n
@@ -20,20 +53,18 @@ services:
       - N8N_SMTP_USER=${N8N_SMTP_USER}
       - N8N_SMTP_PASS=${N8N_SMTP_PASS}
       - N8N_SMTP_SENDER=${N8N_SMTP_SENDER}
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_DATABASE=${POSTGRES_DB_NAME}
+      - DB_POSTGRESDB_HOST=${POSTGRES_HOST}
+      - DB_POSTGRESDB_PORT=${POSTGRES_PORT}
+      - DB_POSTGRESDB_USER=${POSTGRES_USER}
+      - DB_POSTGRESDB_PASSWORD=${POSTGRES_PASSWORD}
+      - DB_POSTGRESDB_SCHEMA=${N8N_POSTGRES_SCHEMA}
     volumes:
       - n8n_data:/home/node/.n8n
-
-  postgres:
-    image: postgres:latest
-    container_name: postgres
-    networks:
-      - caddy_network
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   pgadmin:
     image: dpage/pgadmin4:latest
@@ -42,12 +73,14 @@ services:
       - caddy_network
     ports:
       - "65162:80"
-    depends_on:
-      - postgres
-    links:
-      - postgres:postgres
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
     volumes:
       - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   budibase:
     image: budibase/budibase:latest
@@ -59,6 +92,9 @@ services:
     volumes:
       - budibase_data:/data
       - couchdb_data:/opt/couchdb/data
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   keycloak:
     image: bitnami/keycloak:latest
@@ -71,12 +107,16 @@ services:
       - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN}
       - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
       - DB_VENDOR=POSTGRES
-      - DB_ADDR=postgres
-      - DB_DATABASE=keycloak
-      - DB_USER=keycloak_user
+      - DB_ADDR=${POSTGRES_HOST}
+      - DB_DATABASE=${POSTGRES_DB_NAME}
+      - DB_SCHEMA=keycloak
+      - DB_USER=${POSTGRES_USER}
       - DB_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
       - keycloak_data:/bitnami/keycloak
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   caddy:
     image: caddy:latest
@@ -88,6 +128,12 @@ services:
       - "443:443"
     volumes:
       - ${CADDY_VOLUME_LOCATION}:/etc/caddy/Caddyfile
+    depends_on:
+      - postgres
+      - n8n
+      - pgadmin
+      - budibase
+      - keycloak
 
 volumes:
   n8n_data:
@@ -101,4 +147,8 @@ volumes:
   couchdb_data:
     external: true
   keycloak_data:
+    external: true
+
+networks:
+  caddy_network:
     external: true

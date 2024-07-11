@@ -1,2 +1,2 @@
 @echo off
-powershell.exe -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File "run.ps1"
+powershell.exe -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File "C:\Jexxl\FlaskRunner\run.ps1"
