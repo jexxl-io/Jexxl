@@ -47,6 +47,9 @@ services:
       - .env
     volumes:
       - n8n_data:/home/node/.n8n
+      - ./pyscripts:/home/node/pyscripts
+    command: >
+      sh -c "mkdir -p /home/node/pyscripts && n8n"
     depends_on:
       postgres:
         condition: service_healthy
