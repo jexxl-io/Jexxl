@@ -1,23 +1,34 @@
 n8n.jexxl.io {
+    tls {
+        on_demand
+    }
     reverse_proxy http://host.docker.internal:5678
 }
 
 api.jexxl.io {
+    tls {
+        on_demand
+    }
     reverse_proxy http://host.docker.internal:65159
 }
 
-www.jexxl.io {
-    reverse_proxy http://host.docker.internal:65160
-}
-
-pages.jexxl.io {
-    reverse_proxy http://host.docker.internal:65161
-}
-
 pgadmin.jexxl.io {
+    tls {
+        on_demand
+    }
     reverse_proxy http://host.docker.internal:65162
 }
 
 budibase.jexxl.io {
+    tls {
+        on_demand
+    }
     reverse_proxy http://host.docker.internal:65163
+}
+
+keycloak.jexxl.io {
+    tls {
+        on_demand
+    }
+    reverse_proxy http://host.docker.internal:65164
 }

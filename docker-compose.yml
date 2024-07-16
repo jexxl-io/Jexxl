@@ -6,10 +6,8 @@ services:
       - caddy_network
     ports:
       - "5432:5432"
-    environment:
-      - POSTGRES_DB=${POSTGRES_DB_NAME}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    env_file:
+      - .env
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -39,27 +37,14 @@ services:
         condition: service_healthy
 
   n8n:
-    image: docker.n8n.io/n8nio/n8n:latest
+    image: naskio/n8n-python:latest
     container_name: n8n
     networks:
       - caddy_network
     ports:
       - "5678:5678"
-    environment:
-      - WEBHOOK_URL=${N8N_WEBHOOK_URL}
-      - N8N_EMAIL_MODE=smtp
-      - N8N_SMTP_HOST=smtp.gmail.com
-      - N8N_SMTP_PORT=465
-      - N8N_SMTP_USER=${N8N_SMTP_USER}
-      - N8N_SMTP_PASS=${N8N_SMTP_PASS}
-      - N8N_SMTP_SENDER=${N8N_SMTP_SENDER}
-      - DB_TYPE=postgresdb
-      - DB_POSTGRESDB_DATABASE=${POSTGRES_DB_NAME}
-      - DB_POSTGRESDB_HOST=${POSTGRES_HOST}
-      - DB_POSTGRESDB_PORT=${POSTGRES_PORT}
-      - DB_POSTGRESDB_USER=${POSTGRES_USER}
-      - DB_POSTGRESDB_PASSWORD=${POSTGRES_PASSWORD}
-      - DB_POSTGRESDB_SCHEMA=${N8N_POSTGRES_SCHEMA}
+    env_file:
+      - .env
     volumes:
       - n8n_data:/home/node/.n8n
     depends_on:
@@ -73,9 +58,8 @@ services:
       - caddy_network
     ports:
       - "65162:80"
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
-      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+    env_file:
+      - .env
     volumes:
       - pgadmin_data:/var/lib/pgadmin
     depends_on:
@@ -103,15 +87,8 @@ services:
       - caddy_network
     ports:
       - "65164:8080"
-    environment:
-      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN}
-      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
-      - DB_VENDOR=POSTGRES
-      - DB_ADDR=${POSTGRES_HOST}
-      - DB_DATABASE=${POSTGRES_DB_NAME}
-      - DB_SCHEMA=keycloak
-      - DB_USER=${POSTGRES_USER}
-      - DB_PASSWORD=${POSTGRES_PASSWORD}
+    env_file:
+      - .env
     volumes:
       - keycloak_data:/bitnami/keycloak
     depends_on:
@@ -128,6 +105,8 @@ services:
       - "443:443"
     volumes:
       - ${CADDY_VOLUME_LOCATION}:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
     depends_on:
       - postgres
       - n8n
@@ -147,6 +126,10 @@ volumes:
   couchdb_data:
     external: true
   keycloak_data:
+    external: true
+  caddy_data:
+    external: true
+  caddy_config:
     external: true
 
 networks:

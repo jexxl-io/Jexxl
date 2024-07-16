@@ -1,5 +1,5 @@
 import logging
-from flask import Flask, request, redirect
+from flask import Flask, request, redirect, render_template
 import SuiteQLTool
 
 app = Flask(__name__)
@@ -12,7 +12,7 @@ logging.basicConfig(filename='access.log', level=logging.INFO,
 def home():
     app.logger.info('Request to \'/\' was made')
 
-    return redirect("https://www.jexxl.io", code=302)
+    return render_template('index.html')
 
 @app.route('/suiteql', methods=['POST'])
 def suiteql():
